@@ -1,71 +1,94 @@
 "use strict";
 
-function DomElement(selector, height, width, bg, fontSize) {
-    this.selector = selector;
-    this.height = height;
-    this.width = width;
-    this.bg = bg;
-    this.fontSize = fontSize;
+document.addEventListener("DOMContentLoaded", () => {
+    function DomElement(
+        selector,
+        height,
+        width,
+        bg,
+        fontSize,
+        position,
+        top,
+        left
+    ) {
+        this.selector = selector;
+        this.height = height;
+        this.width = width;
+        this.bg = bg;
+        this.fontSize = fontSize;
+        this.position = position;
+        this.top = top;
+        this.left = left;
 
-    this.createElement = function() {
-        if (selector[0] === ".") {
-            let div = document.createElement("div");
-            div.classList.add("selector");
-            div.style.cssText = `height: ${height}px;
+        this.createElement = function() {
+            if (selector[0] === ".") {
+                let div = document.createElement("div");
+                div.classList.add("selector");
+                div.style.cssText = `position: ${position};
+                                 top: ${top}px;
+                                 left: ${left}px;
+                                 height: ${height}px;
                                  width: ${width}px;
                                  background: ${bg};
                                  fontSize: ${fontSize}px;`;
-            div.textContent = "Build constructor with .block";
-            // selector.position = "absolute";
-            document.body.append(div);
-        } else if (selector[0] === "#") {
-            let div = document.createElement("div");
-            div.setAttribute("id", "selector");
-            div.style.cssText = `height: ${height}px;
+                div.textContent = "Build constructor with .block";
+
+                document.body.append(div);
+            } else if (selector[0] === "#") {
+                let div = document.createElement("div");
+                div.setAttribute("id", "selector");
+                div.style.cssText = `position: ${position};
+                                 top: ${top}px;
+                                 left: ${left}px;
+                                 height: ${height}px;
                                  width: ${width}px;
                                  background: ${bg};
                                  fontSize: ${fontSize}px;`;
-            div.textContent = "Build constructor with #block";
-            // selector.position = "absolute";
-            document.body.append(div);
-        }
-    };
-}
+                div.textContent = "Build constructor with #block";
 
-document.addEventListener("DOMContentLoaded", () => {
-    const body = document.querySelector("body");
-    let newBlock = new DomElement(".square", "100", "100", "green", "14");
-    newBlock.createElement(".square");
-    const square = document.querySelector(".square");
-    body.style.margin = 0;
-    //square.style.position = "absolute";
-    console.log("DOM fully loaded and parsed, newBlock");
+                document.body.append(div);
+            }
+        };
 
-    let top = 15;
-    let left = 15;
-    document.addEventListener("keydown", (eventObject) => {
-        if (eventObject.key == 24) {
-            // нажата клавиша up
-            square.style.top = top - 20 + "px";
-            top -= 10;
-        } else if (eventObject.key == 25) {
-            // нажата клавиша down
-            square.style.top = top + "px";
-            top += 10;
-        } else if (eventObject.key == 26) {
-            // нажата клавиша right
-            square.style.left = left + "px";
-            left += 10;
-        } else if (eventObject.key == 27) {
-            // нажата клавиша left
-            square.style.left = left - 20 + "px";
-            left -= 10;
-        }
-    });
-});
+        this.moveSquare = function() {
+            document.addEventListener("keydown", (eventObject) => {
+                console.log(eventObject);
+                const div = document.querySelector("div");
+                if (eventObject.key === "ArrowUp") {
+                    // нажата клавиша up
+                    console.log("Кнопка вверх");
+                    div.style.top = `${parseInt(div.style.top) - 10}px`;
+                } else if (eventObject.key === "ArrowDown") {
+                    // нажата клавиша down
+                    console.log("Кнопка вниз");
+                    div.style.top = `${parseInt(div.style.top) + 10}px`;
+                } else if (eventObject.key === "ArrowRight") {
+                    // нажата клавиша right
+                    console.log("Кнопка вправо");
+                    div.style.left = `${parseInt(div.style.left) + 10}px`;
+                } else if (eventObject.key === "ArrowLeft") {
+                    // нажата клавиша left
+                    console.log("Кнопка влево");
+                    div.style.left = `${parseInt(div.style.left) - 10}px`;
+                }
+            });
+        };
 
-document.addEventListener("DOMContentLoaded", () => {
-    let newBest = new DomElement("#square", "100", "1000", "yellow", "14");
-    newBest.createElement();
-    console.log("DOM fully loaded and parsed, newBest");
+        this.init = function() {
+            this.createElement();
+            this.moveSquare();
+        };
+    }
+
+    let newBlock = new DomElement(
+        "#square",
+        "100",
+        "100",
+        "green",
+        "14",
+        "absolute",
+        "10",
+        "20"
+    );
+    newBlock.init();
 });
